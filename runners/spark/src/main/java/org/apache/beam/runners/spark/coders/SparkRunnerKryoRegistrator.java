@@ -32,8 +32,6 @@ import org.apache.beam.vendor.guava.v32_1_2_jre.com.google.common.annotations.Vi
 import org.apache.beam.vendor.guava.v32_1_2_jre.com.google.common.collect.HashBasedTable;
 import org.apache.spark.serializer.KryoRegistrator;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Custom {@link KryoRegistrator}s for Beam's Spark runner needs and registering used class in spark
@@ -48,8 +46,6 @@ import org.slf4j.LoggerFactory;
   "rawtypes" // TODO(https://github.com/apache/beam/issues/20447)
 })
 public class SparkRunnerKryoRegistrator implements KryoRegistrator {
-
-  private static final Logger LOG = LoggerFactory.getLogger(SparkRunnerKryoRegistrator.class);
 
   @Override
   public void registerClasses(Kryo kryo) {
@@ -71,15 +67,13 @@ public class SparkRunnerKryoRegistrator implements KryoRegistrator {
         findFirstAvailableClass(
             "scala.collection.mutable.ArraySeq$ofRef",
             "scala.collection.mutable.WrappedArray$ofRef");
-    if (scalaArrayClass != null) {
-      kryo.register(scalaArrayClass);
-    } else {
-      LOG.warn(
+    if (scalaArrayClass == null) {
+      throw new IllegalStateException(
           "Neither scala.collection.mutable.ArraySeq$ofRef (Scala 2.13) nor "
               + "scala.collection.mutable.WrappedArray$ofRef (Scala 2.12) was found on the "
-              + "classpath. Kryo serialization of Scala wrapped arrays will fall back to Java "
-              + "serialization or fail at runtime if spark.kryo.registrationRequired is true.");
+              + "classpath. Cannot register Scala wrapped arrays with Kryo.");
     }
+    kryo.register(scalaArrayClass);
 
     try {
       kryo.register(
