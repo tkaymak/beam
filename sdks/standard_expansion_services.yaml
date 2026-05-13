@@ -44,6 +44,10 @@
       name: 'WriteToKafka'
     'beam:schematransform:org.apache.beam:kafka_read:v1':
       name: 'ReadFromKafka'
+    'beam:schematransform:org.apache.beam:mqtt_write:v1':
+      name: 'WriteToMqtt'
+    'beam:schematransform:org.apache.beam:mqtt_read:v1':
+      name: 'ReadFromMqtt'
   skip_transforms:
     # Handwritten Kafka wrappers already exist in apache_beam/io/kafka.py
     - 'beam:schematransform:org.apache.beam:kafka_write:v1'

@@ -19,7 +19,7 @@
 # configuration in /sdks/standard_expansion_services.yaml.
 # Refer to gen_xlang_wrappers.py for more info.
 #
-# Last updated on: 2025-06-05
+# Last updated on: 2026-05-13
 
 - default_service: sdks:java:io:expansion-service:shadowJar
   description: 'Outputs a PCollection of Beam Rows, each containing a single INT64
@@ -50,6 +50,46 @@
     type: int64
   identifier: beam:schematransform:org.apache.beam:generate_sequence:v1
   name: GenerateSequence
+- default_service: sdks:java:io:expansion-service:shadowJar
+  description: ''
+  destinations:
+    python: apache_beam/io
+  fields:
+  - description: Configuration options to set up the MQTT connection.
+    name: connection_configuration
+    nullable: false
+    type: Row(client_id=typing.Optional[str], password=typing.Optional[str], server_uri=<class
+      'str'>, topic=typing.Optional[str], username=typing.Optional[str])
+  - description: The max number of records to receive. Setting this will result in
+      a bounded PCollection.
+    name: max_num_records
+    nullable: true
+    type: int64
+  - description: The maximum time for this source to read messages. Setting this will
+      result in a bounded PCollection.
+    name: max_read_time_seconds
+    nullable: true
+    type: int64
+  identifier: beam:schematransform:org.apache.beam:mqtt_read:v1
+  name: ReadFromMqtt
+- default_service: sdks:java:io:expansion-service:shadowJar
+  description: ''
+  destinations:
+    python: apache_beam/io
+  fields:
+  - description: Configuration options to set up the MQTT connection.
+    name: connection_configuration
+    nullable: false
+    type: Row(client_id=typing.Optional[str], password=typing.Optional[str], server_uri=<class
+      'str'>, topic=typing.Optional[str], username=typing.Optional[str])
+  - description: Whether or not the publish message should be retained by the messaging
+      engine. When a subscriber connects, it gets the latest retained message. Defaults
+      to `False`, which will clear the retained message from the server.
+    name: retained
+    nullable: true
+    type: boolean
+  identifier: beam:schematransform:org.apache.beam:mqtt_write:v1
+  name: WriteToMqtt
 - default_service: sdks:java:io:expansion-service:shadowJar
   description: ''
   destinations:

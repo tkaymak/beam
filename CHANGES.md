@@ -68,6 +68,7 @@
 * Support for X source added (Java/Python) ([#X](https://github.com/apache/beam/issues/X)).
 * IcebergIO: support declaring a table's sort order on dynamic table creation via the new `sort_fields` config ([#38269](https://github.com/apache/beam/issues/38269)).
 * IcebergIO: support writing with hash distribution mode, and with autosharding ([#38061](https://github.com/apache/beam/issues/38061))).
+* MqttIO: portable `ReadFromMqtt` / `WriteToMqtt` transforms now available in Python via cross-language (`apache_beam.io`); batch only ([#32385](https://github.com/apache/beam/issues/32385)).
 
 ## New Features / Improvements
 
